@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kisanova — AI-Powered Government Scheme Assistant for Farmers</title>
+  <meta name="description" content="Kisanova helps Indian farmers discover government schemes they are eligible for using AI-powered natural language understanding." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Base ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep:     #0c1f14;
+      --bg-card:     #132518;
+      --bg-card2:    #1a3326;
+      --border:      #2a5038;
+      --border-light:#3a6848;
+      --gold:        #e8b84b;
+      --gold-dark:   #c99a2e;
+      --gold-light:  #f0cc7a;
+      --text-primary:#f0f0ec;
+      --text-muted:  #8aaa94;
+      --text-dim:    #5a7a64;
+      --accent-green:#2d7a4f;
+      --accent-green2:#3a9960;
+      --danger:      #e05c5c;
+      --warn-bg:     #1e2e1a;
+      --warn-border: #4a7a36;
+      --radius-sm:   6px;
+      --radius-md:   12px;
+      --radius-lg:   18px;
+      --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
+      --shadow-glow: 0 0 24px rgba(232,184,75,0.12);
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Nav ───────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 64px;
+      background: rgba(12,31,20,0.92);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.02em;
+    }
+    .nav-brand .leaf { font-size: 1.3rem; }
+    .nav-tag {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem; font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .nav-link { color: var(--text-muted); font-size: 0.85rem; font-weight: 500; }
+    .nav-link:hover { color: var(--text-primary); text-decoration: none; }
+
+    /* ── Hero ──────────────────────────────────────────────────── */
+    .hero {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+      padding: 5rem 1.5rem 3.5rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(232,184,75,0.1);
+      border: 1px solid rgba(232,184,75,0.25);
+      color: var(--gold-light);
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 20px;
+      margin-bottom: 1.8rem;
+    }
+    .hero-badge::before { content: '✦'; font-size: 0.6rem; }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text-primary);
+      margin-bottom: 1.1rem;
+    }
+    .hero h1 em { color: var(--gold); font-style: normal; }
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+    }
+
+    /* ── Input Box ─────────────────────────────────────────────── */
+    .query-box {
+      width: 100%;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .query-textarea-wrap {
+      position: relative;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .query-textarea-wrap:focus-within {
+      border-color: var(--gold);
+      box-shadow: var(--shadow-glow);
+    }
+    #query-input {
+      width: 100%;
+      background: transparent;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      padding: 1.1rem 1.3rem 3.5rem;
+      border: none;
+      outline: none;
+      resize: none;
+      min-height: 110px;
+      border-radius: var(--radius-lg);
+    }
+    #query-input::placeholder { color: var(--text-dim); }
+    .query-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 1rem 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+    #char-count { font-size: 0.75rem; color: var(--text-dim); }
+    .btn-submit {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--gold);
+      color: #0c1f14;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem; font-weight: 700;
+      padding: 0.6rem 1.5rem;
+      border-radius: 8px;
+      border: none; cursor: pointer;
+      transition: background .15s, transform .1s, box-shadow .15s;
+    }
+    .btn-submit:hover { background: var(--gold-light); box-shadow: 0 4px 16px rgba(232,184,75,0.35); }
+    .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+    .btn-submit svg { width: 16px; height: 16px; }
+
+    /* ── Example Prompts ───────────────────────────────────────── */
+    .examples {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+      justify-content: center;
+      margin-top: 1.3rem;
+    }
+    .example-chip {
+      background: rgba(45,122,79,0.15);
+      border: 1px solid rgba(45,122,79,0.4);
+      color: var(--accent-green2);
+      font-size: 0.8rem; font-weight: 500;
+      padding: 5px 14px; border-radius: 20px;
+      cursor: pointer;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .example-chip:hover {
+      background: rgba(45,122,79,0.3);
+      border-color: var(--accent-green2);
+      color: #fff;
+    }
+
+    /* ── Main Content ──────────────────────────────────────────── */
+    .main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+    }
+
+    /* ── Loading ───────────────────────────────────────────────── */
+    #loading-section {
+      display: none;
+      flex-direction: column; align-items: center;
+      padding: 3.5rem 1rem;
+      text-align: center;
+    }
+    .loading-spinner {
+      width: 44px; height: 44px;
+      border: 3px solid rgba(232,184,75,0.15);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin-bottom: 1.5rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-steps { list-style: none; }
+    .loading-steps li {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      padding: 0.3rem 0;
+      transition: color .3s;
+    }
+    .loading-steps li.active { color: var(--gold); font-weight: 600; }
+    .loading-steps li.done { color: var(--accent-green2); }
+    .loading-steps li.done::before { content: '✓ '; }
+
+    /* ── Clarification Banner ──────────────────────────────────── */
+    #clarification-section {
+      display: none;
+      background: var(--bg-card);
+      border: 1.5px solid var(--warn-border);
+      border-radius: var(--radius-lg);
+      padding: 1.8rem 2rem;
+      margin-bottom: 2rem;
+    }
+    .clarif-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 0.7rem;
+    }
+    .clarif-msg { color: var(--text-muted); margin-bottom: 1rem; font-size: 0.95rem; }
+    .clarif-missing { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.2rem; }
+    .miss-tag {
+      background: rgba(232,184,75,0.12);
+      border: 1px solid rgba(232,184,75,0.3);
+      color: var(--gold);
+      font-size: 0.75rem; font-weight: 600;
+      padding: 3px 10px; border-radius: 12px;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .clarif-input-row {
+      display: flex; gap: 10px;
+    }
+    #clarif-input {
+      flex: 1;
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      padding: 0.65rem 1rem;
+      outline: none;
+      transition: border-color .15s;
+    }
+    #clarif-input:focus { border-color: var(--gold); }
+    #clarif-input::placeholder { color: var(--text-dim); }
+    .btn-clarif {
+      background: var(--gold);
+      color: #0c1f14;
+      font-weight: 700; font-size: 0.85rem;
+      padding: 0.65rem 1.2rem;
+      border: none; border-radius: var(--radius-sm);
+      cursor: pointer; white-space: nowrap;
+      transition: background .15s;
+    }
+    .btn-clarif:hover { background: var(--gold-light); }
+
+    /* ── Error Banner ──────────────────────────────────────────── */
+    #error-section {
+      display: none;
+      background: rgba(224,92,92,0.08);
+      border: 1px solid rgba(224,92,92,0.35);
+      border-radius: var(--radius-md);
+      padding: 1.2rem 1.5rem;
+      color: #f08080;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+    #error-section .err-title { font-weight: 700; margin-bottom: 4px; }
+
+    /* ── Results ───────────────────────────────────────────────── */
+    #results-section { display: none; }
+
+    /* ── Profile Card ──────────────────────────────────────────── */
+    .profile-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+    .profile-card-title {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+    .profile-item { }
+    .profile-item .label {
+      font-size: 0.7rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--text-dim);
+      margin-bottom: 2px;
+    }
+    .profile-item .value {
+      font-size: 0.95rem; font-weight: 600;
+      color: var(--text-primary);
+    }
+    .profile-item .value.muted { color: var(--text-muted); font-weight: 400; font-style: italic; }
+
+    /* ── Scheme Count ──────────────────────────────────────────── */
+    .scheme-count-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.2rem;
+    }
+    .scheme-count-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(45,122,79,0.2);
+      border: 1px solid var(--accent-green);
+      color: #6ecf8e;
+      font-size: 0.85rem; font-weight: 700;
+      padding: 5px 14px; border-radius: 20px;
+    }
+    .scheme-count-badge .dot {
+      width: 7px; height: 7px;
+      background: #6ecf8e; border-radius: 50%;
+    }
+    .no-schemes-msg {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+    }
+    .no-schemes-msg .icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+    .no-schemes-msg h3 { color: var(--text-primary); margin-bottom: 0.5rem; }
+
+    /* ── Groq Explanation ──────────────────────────────────────── */
+    .explanation-card {
+      background: linear-gradient(135deg, rgba(45,122,79,0.12), rgba(19,37,24,0.8));
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 1.6rem 2rem;
+      margin-bottom: 1.8rem;
+      position: relative;
+    }
+    .explanation-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--accent-green2));
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+    .explanation-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .explanation-label svg { width: 14px; height: 14px; }
+    .explanation-body {
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      line-height: 1.75;
+      white-space: pre-wrap;
+    }
+    .explanation-body strong { color: var(--gold-light); }
+
+    /* ── Scheme Cards ──────────────────────────────────────────── */
+    .schemes-grid {
+      display: flex; flex-direction: column; gap: 1.2rem;
+    }
+    .scheme-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .scheme-card:hover {
+      border-color: var(--border-light);
+      box-shadow: var(--shadow-card);
+    }
+    .scheme-card-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      padding: 1.3rem 1.5rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+    }
+    .scheme-number {
+      flex-shrink: 0;
+      width: 30px; height: 30px;
+      background: rgba(232,184,75,0.15);
+      border: 1px solid rgba(232,184,75,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700;
+      color: var(--gold);
+      margin-top: 2px;
+    }
+    .scheme-name-wrap { flex: 1; }
+    .scheme-name {
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.35rem;
+      line-height: 1.3;
+    }
+    .scheme-category {
+      display: inline-block;
+      background: rgba(45,122,79,0.2);
+      border: 1px solid rgba(45,122,79,0.4);
+      color: var(--accent-green2);
+      font-size: 0.7rem; font-weight: 600;
+      padding: 2px 9px; border-radius: 10px;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .scheme-card-body { padding: 1.2rem 1.5rem; }
+    .scheme-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 600px) { .scheme-row { grid-template-columns: 1fr; } }
+    .scheme-section { }
+    .scheme-section-title {
+      font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 0.4rem;
+    }
+    .scheme-section-body {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+    .scheme-section-body.highlight { color: var(--text-primary); }
+    .docs-list { list-style: none; }
+    .docs-list li {
+      display: flex; align-items: flex-start; gap: 6px;
+      font-size: 0.85rem; color: var(--text-muted);
+      padding: 2px 0;
+    }
+    .docs-list li::before { content: '•'; color: var(--gold); flex-shrink: 0; margin-top: 1px; }
+    .scheme-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.8rem 1.5rem;
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+    .scheme-url-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--gold);
+      font-size: 0.82rem; font-weight: 600;
+    }
+    .scheme-url-link svg { width: 13px; height: 13px; }
+    .scheme-url-link:hover { color: var(--gold-light); }
+    .no-url { color: var(--text-dim); font-size: 0.82rem; }
+
+    /* ── Disclaimer ────────────────────────────────────────────── */
+    .disclaimer {
+      background: rgba(26,51,38,0.5);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.3rem;
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .disclaimer .icon { flex-shrink: 0; font-size: 0.9rem; margin-top: 1px; }
+
+    /* ── New Search ────────────────────────────────────────────── */
+    .new-search-btn {
+      display: flex; align-items: center; gap: 8px;
+      background: transparent;
+      border: 1.5px solid var(--border-light);
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color .15s, color .15s;
+    }
+    .new-search-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── Engine Badge ──────────────────────────────────────────── */
+    .engine-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.68rem; font-weight: 600;
+      padding: 3px 9px; border-radius: 10px;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .engine-badge.groq {
+      background: rgba(232,184,75,0.1); border: 1px solid rgba(232,184,75,0.25);
+      color: var(--gold);
+    }
+    .engine-badge.fallback {
+      background: rgba(90,122,100,0.2); border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .engine-badge::before {
+      content: ''; width: 5px; height: 5px;
+      border-radius: 50%; background: currentColor;
+    }
+
+    /* ── Footer ────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.78rem;
+    }
+    footer span { color: var(--text-muted); }
+
+    /* ── Responsive ────────────────────────────────────────────── */
+    @media (max-width: 700px) {
+      .nav { padding: 0 1rem; }
+      .hero { padding: 3rem 1rem 2rem; }
+      .main { padding: 0 1rem 3rem; }
+      .scheme-card-header { flex-direction: column; }
+      .scheme-count-bar { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<nav class="nav">
+  <div class="nav-brand">
+    <span class="leaf">🌾</span> Kisanova
+    <span class="nav-tag">Beta</span>
+  </div>
+  <div class="nav-right">
+    <a href="#" class="nav-link" id="nav-new-search-btn" style="display:none">← New Search</a>
+    <a href="https://schemes.kisanova.in" class="nav-link" target="_blank" style="display:none">Schemes</a>
+  </div>
+</nav>
+
+<!-- ── Hero / Input ── -->
+<section id="landing-section">
+  <div class="hero">
+    <div class="hero-badge">AI-Powered · Government Schemes · Free to Use</div>
+    <h1>
+      <em>AI-Powered</em> Government Scheme<br />Assistant for Farmers
+    </h1>
+    <p>Tell us about your farming situation and discover government schemes that may be relevant to you.</p>
+  </div>
+
+  <div class="main" style="padding-top: 0;">
+    <div class="query-box">
+      <div class="query-textarea-wrap">
+        <textarea
+          id="query-input"
+          rows="3"
+          placeholder="I'm a farmer from Telangana with 3 acres and I grow paddy. What government schemes can I benefit from?"
+        ></textarea>
+        <div class="query-footer">
+          <span id="char-count">0 / 600 characters</span>
+          <button class="btn-submit" id="submit-btn" onclick="submitQuery()">
+            <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Find My Schemes
+          </button>
+        </div>
+      </div>
+
+      <div class="examples">
+        <button class="example-chip" onclick="fillExample(this)">Telangana · 3 acres · paddy</button>
+        <button class="example-chip" onclick="fillExample(this)">Maharashtra · 5 acres · wheat &amp; cotton</button>
+        <button class="example-chip" onclick="fillExample(this)">Karnataka dairy farmer · 0 acres</button>
+        <button class="example-chip" onclick="fillExample(this)">Punjab · 10 acres · rice &amp; wheat</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Results / Loading area ── -->
+<div class="main" id="results-area">
+
+  <!-- Loading -->
+  <div id="loading-section">
+    <div class="loading-spinner"></div>
+    <ul class="loading-steps" id="loading-steps">
+      <li id="ls-1">Understanding your farming profile…</li>
+      <li id="ls-2">Checking matching government schemes…</li>
+      <li id="ls-3">Preparing your personalized recommendations…</li>
+    </ul>
+  </div>
+
+  <!-- Error -->
+  <div id="error-section">
+    <div class="err-title">⚠ Something went wrong</div>
+    <div id="error-msg">Please try again.</div>
+  </div>
+
+  <!-- Clarification -->
+  <div id="clarification-section">
+    <div class="clarif-title">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+      We need a little more information
+    </div>
+    <div class="clarif-msg" id="clarif-msg">Please provide the missing details.</div>
+    <div class="clarif-missing" id="clarif-missing"></div>
+    <div class="clarif-input-row">
+      <input type="text" id="clarif-input" placeholder="e.g. Telangana, 3 acres" onkeydown="if(event.key==='Enter')submitClarification()" />
+      <button class="btn-clarif" onclick="submitClarification()">Continue →</button>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div id="results-section">
+
+    <!-- Profile + Count row -->
+    <div class="profile-card" id="profile-card">
+      <div class="profile-card-title">🧑‍🌾 Your Farmer Profile</div>
+      <div class="profile-grid" id="profile-grid"></div>
+    </div>
+
+    <!-- Scheme count + engine -->
+    <div class="scheme-count-bar">
+      <div id="scheme-count-badge" class="scheme-count-badge">
+        <div class="dot"></div>
+        <span id="scheme-count-text">Schemes Found</span>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <span id="engine-badge-extraction" class="engine-badge"></span>
+        <button class="new-search-btn" onclick="resetToLanding()">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.93"/></svg>
+          New Search
+        </button>
+      </div>
+    </div>
+
+    <!-- Groq Explanation -->
+    <div class="explanation-card" id="explanation-card" style="display:none">
+      <div class="explanation-label">
+        <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 5v5l3 3"/></svg>
+        Personalized AI Explanation
+      </div>
+      <div class="explanation-body" id="explanation-body"></div>
+    </div>
+
+    <!-- Scheme Cards -->
+    <div class="schemes-grid" id="schemes-grid"></div>
+
+    <!-- No schemes -->
+    <div id="no-schemes-msg" class="no-schemes-msg" style="display:none">
+      <div class="icon">🔍</div>
+      <h3>No Matching Schemes Found</h3>
+      <p>No government schemes matched your specific profile. Try providing more details about your state, land size, or crops to get better results.</p>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+      <span class="icon">📌</span>
+      <span>These recommendations indicate potential scheme relevance based on the information provided. Final eligibility and approval are determined by the respective government authorities. Always verify with official portals before applying.</span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>Kisanova</span> · AI-powered scheme discovery for Indian farmers · Built for good.
+</footer>
+
+<script>
+  // ── State ──────────────────────────────────────────────────────
+  let lastQuery = '';
+  let loadingInterval = null;
+
+  // ── Character Count ─────────────────────────────────────────────
+  const queryInput = document.getElementById('query-input');
+  const charCount = document.getElementById('char-count');
+  queryInput.addEventListener('input', () => {
+    const len = queryInput.value.length;
+    charCount.textContent = `${len} / 600 characters`;
+    charCount.style.color = len > 550 ? '#e8b84b' : '';
+  });
+
+  // ── Example Chips ───────────────────────────────────────────────
+  const EXAMPLE_FULL = {
+    'Telangana · 3 acres · paddy': "I'm a farmer from Telangana with 3 acres and I grow paddy. What government schemes can I benefit from?",
+    'Maharashtra · 5 acres · wheat & cotton': "I have 5 acres of farmland in Maharashtra and I grow wheat and cotton. Which schemes am I eligible for?",
+    'Karnataka dairy farmer · 0 acres': "I'm a dairy farmer from Karnataka. I don't own any land, I raise cattle and produce milk. What schemes help me?",
+    'Punjab · 10 acres · rice & wheat': "I'm a farmer from Punjab with 10 acres. I grow rice and wheat. What government schemes can I apply for?"
+  };
+  function fillExample(btn) {
+    const key = btn.textContent.trim().replace(/&amp;/g, '&');
+    queryInput.value = EXAMPLE_FULL[key] || key;
+    queryInput.dispatchEvent(new Event('input'));
+    queryInput.focus();
+  }
+
+  // ── Loading State ───────────────────────────────────────────────
+  function startLoading() {
+    hide('landing-section');
+    show('loading-section', 'flex');
+    hide('results-section');
+    hide('clarification-section');
+    hide('error-section');
+    document.getElementById('nav-new-search-btn').style.display = 'inline';
+
+    const steps = ['ls-1', 'ls-2', 'ls-3'];
+    let i = 0;
+    steps.forEach(id => {
+      const el = document.getElementById(id);
+      el.classList.remove('active', 'done');
+    });
+    document.getElementById('ls-1').classList.add('active');
+
+    loadingInterval = setInterval(() => {
+      if (i < steps.length - 1) {
+        document.getElementById(steps[i]).classList.remove('active');
+        document.getElementById(steps[i]).classList.add('done');
+        i++;
+        document.getElementById(steps[i]).classList.add('active');
+      }
+    }, 1400);
+  }
+
+  function stopLoading() {
+    clearInterval(loadingInterval);
+    hide('loading-section');
+  }
+
+  // ── Submit Query ────────────────────────────────────────────────
+  async function submitQuery() {
+    const msg = queryInput.value.trim();
+    if (!msg) {
+      showError('Please enter your farming details before searching.');
+      return;
+    }
+    if (msg.length > 600) {
+      showError('Your query is too long. Please shorten it to under 600 characters.');
+      return;
+    }
+    lastQuery = msg;
+    await callAssistAPI(msg);
+  }
+
+  async function submitClarification() {
+    const extra = document.getElementById('clarif-input').value.trim();
+    if (!extra) {
+      document.getElementById('clarif-input').focus();
+      return;
+    }
+    // Combine original query + clarification
+    const combined = `${lastQuery} ${extra}`;
+    lastQuery = combined;
+    document.getElementById('clarif-input').value = '';
+    await callAssistAPI(combined);
+  }
+
+  async function callAssistAPI(message) {
+    const submitBtn = document.getElementById('submit-btn');
+    submitBtn.disabled = true;
+    startLoading();
+
+    try {
+      const response = await fetch('/api/kisanova/assist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Server error ${response.status}: ${text.slice(0, 200)}`);
+      }
+
+      const data = await response.json();
+      stopLoading();
+
+      if (!data || typeof data !== 'object') throw new Error('Unexpected response format.');
+
+      if (data.status === 'needs_clarification') {
+        renderClarification(data);
+      } else if (data.status === 'success') {
+        renderResults(data);
+      } else {
+        throw new Error('Unexpected status: ' + (data.status || 'unknown'));
+      }
+
+    } catch (err) {
+      stopLoading();
+      let msg = 'Unable to connect to the server. Please check your connection and try again.';
+      if (err.message && err.message.length < 300) msg = err.message;
+      showError(msg);
+      show('landing-section');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  }
+
+  // ── Render: Clarification ───────────────────────────────────────
+  function renderClarification(data) {
+    const missing = data.missing_fields || [];
+    document.getElementById('clarif-msg').textContent = data.message || 'Please provide the missing details.';
+
+    const missingEl = document.getElementById('clarif-missing');
+    missingEl.innerHTML = '';
+    const labels = { state: 'State / Location', acres: 'Land Size (Acres)', crops: 'Crops Grown', farmer_type: 'Farmer Type' };
+    missing.forEach(f => {
+      const tag = document.createElement('span');
+      tag.className = 'miss-tag';
+      tag.textContent = labels[f] || f;
+      missingEl.appendChild(tag);
+    });
+
+    // Hint placeholder
+    const hints = [];
+    if (missing.includes('state')) hints.push('e.g. Telangana');
+    if (missing.includes('acres')) hints.push('e.g. 3 acres');
+    if (missing.includes('crops')) hints.push('e.g. paddy, wheat');
+    document.getElementById('clarif-input').placeholder = hints.join(', ') || 'Please provide more details…';
+
+    hide('landing-section');
+    show('clarification-section');
+    hide('results-section');
+    hide('error-section');
+    document.getElementById('clarif-input').focus();
+  }
+
+  // ── Render: Results ─────────────────────────────────────────────
+  function renderResults(data) {
+    const profile = data.farmer_profile || {};
+    const schemes = data.schemes || [];
+    const engine = data.engine || {};
+
+    // Profile
+    const profileItems = [
+      { label: 'State',        value: profile.state },
+      { label: 'Land',         value: profile.acres != null ? `${profile.acres} acres` : null },
+      { label: 'Crops',        value: profile.crops?.length ? profile.crops.join(', ') : null },
+      { label: 'Farmer Type',  value: profile.farmer_type ? capitalize(profile.farmer_type) : null },
+      { label: 'Annual Income',value: profile.income ? `₹${profile.income.toLocaleString()}` : null },
+    ];
+    const profileGrid = document.getElementById('profile-grid');
+    profileGrid.innerHTML = '';
+    profileItems.forEach(({ label, value }) => {
+      if (label === 'Annual Income' && !value) return; // skip income if not provided
+      const div = document.createElement('div');
+      div.className = 'profile-item';
+      div.innerHTML = `<div class="label">${label}</div><div class="value ${!value ? 'muted' : ''}">${value || 'Not provided'}</div>`;
+      profileGrid.appendChild(div);
+    });
+
+    // Scheme count
+    const count = schemes.length;
+    document.getElementById('scheme-count-text').textContent =
+      count === 0 ? 'No Schemes Found' : `${count} Scheme${count !== 1 ? 's' : ''} Found`;
+    const badge = document.getElementById('scheme-count-badge');
+    if (count === 0) {
+      badge.style.background = 'rgba(224,92,92,0.1)';
+      badge.style.borderColor = 'rgba(224,92,92,0.35)';
+      badge.style.color = '#f08080';
+      badge.querySelector('.dot').style.background = '#f08080';
+    }
+
+    // Engine badge
+    const isGroq = engine.live_groq_active;
+    const extractBadge = document.getElementById('engine-badge-extraction');
+    extractBadge.className = `engine-badge ${isGroq ? 'groq' : 'fallback'}`;
+    extractBadge.textContent = isGroq ? 'Groq AI' : 'Local Engine';
+
+    // Explanation
+    const explCard = document.getElementById('explanation-card');
+    const explBody = document.getElementById('explanation-body');
+    if (data.answer && data.answer.trim()) {
+      explCard.style.display = '';
+      explBody.innerHTML = renderMarkdown(data.answer);
+    } else {
+      explCard.style.display = 'none';
+    }
+
+    // Scheme cards
+    const grid = document.getElementById('schemes-grid');
+    grid.innerHTML = '';
+    const noSchemesMsg = document.getElementById('no-schemes-msg');
+    if (count === 0) {
+      noSchemesMsg.style.display = '';
+    } else {
+      noSchemesMsg.style.display = 'none';
+      schemes.forEach((scheme, idx) => {
+        grid.appendChild(buildSchemeCard(scheme, idx + 1));
+      });
+    }
+
+    hide('landing-section');
+    hide('clarification-section');
+    hide('error-section');
+    show('results-section');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── Build Scheme Card ───────────────────────────────────────────
+  function buildSchemeCard(scheme, num) {
+    const card = document.createElement('div');
+    card.className = 'scheme-card';
+
+    const cat = scheme.category ? `<span class="scheme-category">${scheme.category}</span>` : '';
+    const benefit = scheme.benefit || 'See official portal for details.';
+    const eligibility = scheme.eligibility || 'See official portal for eligibility criteria.';
+    const docs = scheme.docs?.length ? scheme.docs : [];
+    const docsHtml = docs.length
+      ? `<ul class="docs-list">${docs.map(d => `<li>${escHtml(d)}</li>`).join('')}</ul>`
+      : `<span style="color:var(--text-dim);font-size:0.85rem">Details on official portal</span>`;
+
+    const urlHtml = scheme.url
+      ? `<a href="${escHtml(scheme.url)}" target="_blank" rel="noopener" class="scheme-url-link">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Apply / Official Portal
+        </a>`
+      : `<span class="no-url">Portal link not available</span>`;
+
+    card.innerHTML = `
+      <div class="scheme-card-header">
+        <div class="scheme-number">${num}</div>
+        <div class="scheme-name-wrap">
+          <div class="scheme-name">${escHtml(scheme.name || 'Unknown Scheme')}</div>
+          ${cat}
+        </div>
+      </div>
+      <div class="scheme-card-body">
+        <div class="scheme-row">
+          <div class="scheme-section">
+            <div class="scheme-section-title">💰 Key Benefit</div>
+            <div class="scheme-section-body highlight">${escHtml(benefit)}</div>
+          </div>
+          <div class="scheme-section">
+            <div class="scheme-section-title">✅ Eligibility</div>
+            <div class="scheme-section-body">${escHtml(eligibility)}</div>
+          </div>
+        </div>
+        <div class="scheme-section">
+          <div class="scheme-section-title">📋 Required Documents</div>
+          ${docsHtml}
+        </div>
+      </div>
+      <div class="scheme-card-footer">
+        ${urlHtml}
+        <span style="color:var(--text-dim);font-size:0.75rem">Source: Government of India</span>
+      </div>
+    `;
+    return card;
+  }
+
+  // ── Helpers ─────────────────────────────────────────────────────
+  function showError(msg) {
+    document.getElementById('error-msg').textContent = msg;
+    show('error-section');
+  }
+
+  function show(id, display = 'block') {
+    const el = document.getElementById(id);
+    if (el) el.style.display = display;
+  }
+  function hide(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  }
+
+  function capitalize(s) {
+    if (!s) return s;
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  function escHtml(s) {
+    if (!s) return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // Minimal markdown renderer: **bold**, *italic*, line breaks
+  function renderMarkdown(text) {
+    if (!text) return '';
+    return escHtml(text)
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/\n/g, '<br>');
+  }
+
+  function resetToLanding() {
+    hide('results-section');
+    hide('clarification-section');
+    hide('error-section');
+    hide('loading-section');
+    show('landing-section');
+    document.getElementById('nav-new-search-btn').style.display = 'none';
+    queryInput.value = '';
+    queryInput.dispatchEvent(new Event('input'));
+    queryInput.focus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.getElementById('nav-new-search-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    resetToLanding();
+  });
+
+  // Allow Enter+Ctrl to submit
+  queryInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submitQuery();
+  });
+</script>
+</body>
+</html>
