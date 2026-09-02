@@ -1,166 +1,168 @@
-# 🌾 Farmer Government Schemes Chatbot (CLI)
+# 🌾 Kisanova
 
-A simple AI-based command-line chatbot that helps farmers discover relevant government schemes based on their state, land, crops, and farmer category.
+### AI-Powered Government Scheme Discovery for Farmers
 
-This project was developed during **InnovateYou Techathon 2026** to improve awareness and accessibility of government support programs for farmers.
+Kisanova is an AI-powered platform that helps farmers discover government schemes they may be eligible for based on their personal and farming details.
+
+Instead of searching through multiple government websites and complicated eligibility documents, farmers can simply describe their situation in natural language.
+
+For example:
+
+> "I'm a farmer from Telangana with 3 acres of land and I grow paddy. What schemes can I apply for?"
+
+Kisanova extracts the farmer's details, checks them against the available scheme data using deterministic eligibility rules, and provides clear explanations about relevant schemes.
 
 ---
 
 ## 🚀 Features
 
-✅ Interactive chatbot in command-line
-✅ Machine learning-based scheme recommendation using Nearest Neighbors  
-✅ Personalized scheme recommendations
-✅ Filters based on:
-
-* State
-* Land ownership
-* Land area
-* Crops and farming activities
-* Farmer category
-
-✅ Displays:
-
-* Scheme benefits
-* Required documents
-* Official links
-
-✅ Lightweight and easy to use
-✅ Can be extended to web or mobile apps
+- 🌱 Natural-language farmer queries
+- 🤖 AI-powered farmer profile extraction using Groq
+- ✅ Deterministic scheme eligibility matching
+- 🇮🇳 Central and state-specific government schemes
+- 📋 Scheme benefits and eligibility information
+- 📄 Required document information
+- 🔗 Official application links
+- 💬 AI-generated explanations of matching schemes
+- ❓ Clarification when required farmer information is missing
+- 🌐 Simple responsive web interface
+- 🧪 Automated test coverage
 
 ---
 
-## 🧠 Problem Statement
+## 🏗️ Architecture
 
-Many farmers are unaware of government schemes due to lack of access to digital platforms and complex information systems. This chatbot simplifies the process by guiding farmers step-by-step and recommending schemes suited to their needs.
+```text
+Farmer Query
+     │
+     ▼
+┌─────────────────────┐
+│   Kisanova Web UI   │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│    Flask Backend    │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│   Groq LLM          │
+│ Profile Extraction  │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ Deterministic       │
+│ Eligibility Engine  │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│    schemes.json     │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ Matching Schemes    │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ Groq Explanation    │
+└─────────────────────┘
 
----
 
-## 💡 Solution
+Important Design Principle
 
-This chatbot collects farmer details and matches them with suitable government schemes stored in a structured dataset. It ensures that farmers receive relevant, personalized, and easy-to-understand information.
+The LLM does not decide whether a farmer is eligible.
 
----
+The system follows a two-stage approach:
 
-## 🛠️ Tech Stack
+AI extraction — Groq extracts structured information from the farmer's natural-language query.
+Deterministic matching — Python checks the farmer's profile against the scheme eligibility rules.
 
-* Python
-* Flask (Backend API)
-* Machine Learning – Nearest Neighbors Algorithm
-* JSON (for scheme database)
-* CLI-based chatbot
-* Rule-based + ML hybrid recommendation system
+The LLM is then used only to explain the matched schemes.
 
----
-
-## 📂 Project Structure
-
-```bash
-chatbot_kisan/
+🛠️ Technology Stack
+Python
+Flask
+Groq API
+HTML / CSS / JavaScript
+JSON
+Git / GitHub
+📁 Project Structure
+Kisanova/
 │
-├── chatbot.py        # Main chatbot logic  
-├── main.py           # Entry point  
-├── schemes.json      # Government schemes database  
-├── requirements.txt  # Dependencies  
-└── README.md         # Documentation  
-```
+├── chatbot.py
+├── kisanova_engine.py
+├── main.py
+├── schemes.json
+├── templates/
+│   └── index.html
+├── test_kisanova.py
+├── verify_live_groq.py
+├── requirements.txt
+├── runtime.txt
+├── .gitignore
+├── LICENSE
+└── README.md
+⚙️ Setup
+1. Clone the repository
+git clone https://github.com/Harshith0906/Kisanova.git
+cd Kisanova
+2. Create a virtual environment
+python -m venv venv
 
----
+Activate it on Windows:
 
-## ⚙️ Installation & Setup
-
-### Step 1: Clone the repository
-
-```bash
-git clone https://github.com/harshallogade/farmer-schemes-chatbot.git
-```
-
-### Step 2: Go to project folder
-
-```bash
-cd farmer-schemes-chatbot
-```
-
-### Step 3: Install dependencies
-
-```bash
+venv\Scripts\activate
+3. Install dependencies
 pip install -r requirements.txt
-```
+4. Configure Groq
 
-### Step 4: Run the chatbot
+Create a .env file in the project root:
 
-```bash
-python chatbot.py
-```
+GROQ_API_KEY=your_groq_api_key
+GROQ_MODEL=openai/gpt-oss-20b
 
----
+Never commit your .env file or API key to GitHub.
 
-## 🧪 How it Works
+5. Run Kisanova
+python main.py
 
-1. The chatbot asks for:
+Then open the local URL shown by Flask in your browser.
 
-   * State
-   * Land details
-   * Crops or activities
-   * Farmer type
-2. It processes the input.
-## 🤖 Machine Learning Approach
+🧪 Testing
 
-This chatbot uses a hybrid approach combining rule-based filtering and machine learning.
+Run:
 
-The **Nearest Neighbors algorithm** is used to recommend government schemes by finding similarity between the farmer’s profile and existing scheme eligibility conditions. This improves personalization and allows scalable recommendations.
+pytest test_kisanova.py -v
 
-Flask is used to structure the backend, making the system ready for integration with web or mobile applications in the future.
+The project also includes a live Groq verification script:
 
-3. Matches it with the schemes dataset.
-4. Displays personalized scheme recommendations.
+python verify_live_groq.py
+🌾 Example Query
+I'm a farmer from Telangana with 3 acres of land and I grow paddy.
+What government schemes can I apply for?
 
----
+Kisanova identifies the relevant farmer information, matches eligible schemes, and presents their benefits, eligibility requirements, documents, and application information.
 
-## 📈 Future Improvements
+🎯 Project Goal
 
-* Web application version
-* Mobile app
-* Multilingual support (Hindi, Marathi, etc.)
-* Voice assistant integration
-* AI and LLM-based smart recommendations
-* Live government API integration
+Kisanova aims to make government agricultural schemes easier to discover and understand, especially for farmers who may find government portals and eligibility documents difficult to navigate.
+
+📜 License
+
+This project is licensed under the MIT License.
 
 
----
+### Step 3 — Save it
 
-## 🎯 Impact
+Press:
 
-This project can:
+**Ctrl + S**
 
-* Improve awareness of welfare schemes
-* Help small and marginal farmers
-* Support digital agriculture initiatives
-* Bridge the gap between farmers and government support
+That's it for now.
 
----
-
-## 🏆 Hackathon
-
-This project was developed during **InnovateYou Techathon 2026**.
-
----
-
-## 👨‍💻 Team
-
-Developed by:
-
-* **Harshal** and team (3 members)
-
----
-
-## 🤝 Contribution
-
-Contributions are welcome!
-Feel free to fork the repository and submit a pull request.
-
----
-
-## 📜 License
-
-This project is open-source and available under the MIT License.
+**Don't commit or push yet.** Tell me when you've saved it, and I'll give you the next step.
