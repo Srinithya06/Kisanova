@@ -355,13 +355,15 @@ class GroqProvider(LLMProvider):
                 f"- State: {profile.get('state')}\n"
                 f"- Landholding: {profile.get('acres')} acres\n"
                 f"- Crops / Activities: {crops_str}\n"
-                f"- Farmer Type: {profile.get('farmer_type') or 'Individual'}\n\n"
+                f"- Farmer Type: {profile.get('farmer_type') or 'Not provided'}\n\n"
                 f"MATCHED GOVERNMENT SCHEMES:\n{schemes_json}\n\n"
                 "RESPONSE INSTRUCTIONS:\n"
                 "1. Warmly greet the farmer and summarize why these schemes fit their profile.\n"
                 "2. For each scheme: name, why it fits, key benefit, required docs, and apply URL.\n"
                 "3. STRICT GROUNDING: Use ONLY the data provided. Never invent amounts or terms.\n"
-                "4. End with: '📌 *Note: Scheme matches indicate potential relevance. Final eligibility is subject to official government verification.*'"
+                "4. If Farmer Type is 'Not provided', do not describe the farmer as an owner, tenant farmer, sharecropper, small farmer, marginal farmer, individual farmer, or any other farmer type. Do not infer farmer type or land ownership from land size or from saying 'I am a farmer'.\n"
+                "5. Keep scheme eligibility descriptions grounded in the matched scheme data.\n"
+                "6. End with: '📌 *Note: Scheme matches indicate potential relevance. Final eligibility is subject to official government verification.*'"
             )
 
             response = self.client.chat.completions.create(
@@ -375,6 +377,9 @@ class GroqProvider(LLMProvider):
             )
 
             explanation_text = (response.choices[0].message.content or "").strip()
+            if not profile.get("farmer_type") and _contains_unsupported_farmer_type_claim(explanation_text):
+                logger.warning("Groq explanation made an unsupported farmer-type claim. Using grounded fallback.")
+                return self.fallback.generate_explanation(profile, schemes)
             return explanation_text, "groq"
 
         except Exception as e:
@@ -421,6 +426,16 @@ def generate_scheme_explanation(profile: Dict[str, Any], schemes: List[Dict[str,
     """
     provider = get_provider()
     return provider.generate_explanation(profile, schemes)
+
+
+def _contains_unsupported_farmer_type_claim(text: str) -> bool:
+    """Detect unsupported farmer-type or ownership claims in personalized prose."""
+    claim_terms = r"owner|tenant farmer|sharecropper|small farmer|marginal farmer|individual farmer"
+    claim_patterns = [
+        rf"\b(?:you|your|the farmer)\b[^.\n]{{0,80}}\b(?:{claim_terms})\b",
+        rf"\b(?:{claim_terms})\b[^.\n]{{0,80}}\b(?:you|your)\b",
+    ]
+    return any(re.search(pattern, text or "", flags=re.IGNORECASE) for pattern in claim_patterns)
 
 
 # ==================== FALLBACK HELPERS ====================
