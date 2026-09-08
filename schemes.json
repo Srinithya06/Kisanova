@@ -670,6 +670,131 @@
       "deadline": "Ongoing; availability depends on local implementation",
       "deadlineHi": "Ongoing",
       "status": "active"
+    },
+    "s31": {
+      "id": "namo_shetkari",
+      "name": "Namo Shetkari Mahasanman Nidhi Yojana",
+      "nameHi": "Namo Shetkari Mahasanman Nidhi Yojana",
+      "description": "Maharashtra state income support program providing additional assistance to eligible farmers alongside PM-KISAN support where applicable.",
+      "descriptionHi": "Maharashtra state income support program for eligible farmers.",
+      "params": {
+        "state": ["Maharashtra"],
+        "district": "ALL",
+        "crops": ["ALL"],
+        "min_acres": 0
+      },
+      "benefit": "₹6,000 per year in Maharashtra state income support for eligible farmers, in addition to PM-KISAN support where applicable.",
+      "benefitHi": "₹6,000 per year in Maharashtra state income support.",
+      "docs": [],
+      "docsHi": [],
+      "category": "Income Support",
+      "categoryHi": "Income Support",
+      "url": "https://krishi.maharashtra.gov.in/",
+      "eligibility": "Eligible Maharashtra farmers subject to the scheme's current government eligibility and land-record verification requirements.",
+      "eligibilityHi": "Eligible Maharashtra farmers subject to current government eligibility and land-record verification requirements.",
+      "deadline": "Ongoing; check official portal for current information",
+      "deadlineHi": "Ongoing",
+      "status": "active"
+    },
+    "s32": {
+      "id": "maharashtra_agri_mechanization",
+      "name": "State Agriculture Mechanization Scheme",
+      "nameHi": "State Agriculture Mechanization Scheme",
+      "description": "Maharashtra state support scheme for eligible farmers purchasing approved agricultural machinery and equipment.",
+      "descriptionHi": "Maharashtra state support scheme for agricultural machinery and equipment.",
+      "params": {
+        "state": ["Maharashtra"],
+        "district": "ALL",
+        "crops": ["ALL"],
+        "min_acres": 0
+      },
+      "benefit": "Subsidy support for eligible farmers to purchase approved agricultural machinery and equipment, subject to applicable scheme conditions and subsidy limits.",
+      "benefitHi": "Subsidy support for approved agricultural machinery and equipment, subject to applicable scheme conditions and limits.",
+      "docs": [],
+      "docsHi": [],
+      "category": "Equipment",
+      "categoryHi": "Equipment",
+      "url": "https://krishi.maharashtra.gov.in/",
+      "eligibility": "Eligible farmers in Maharashtra, subject to the applicable machinery, beneficiary, land-record and scheme-specific conditions.",
+      "eligibilityHi": "Eligible Maharashtra farmers subject to applicable machinery, beneficiary, land-record and scheme-specific conditions.",
+      "deadline": "Ongoing; check official portal for current information",
+      "deadlineHi": "Ongoing",
+      "status": "active"
+    },
+    "s33": {
+      "id": "bhausaheb_fundkar_phalbaag",
+      "name": "Bhausaheb Fundkar Phalbaag Lagvad Yojana",
+      "nameHi": "Bhausaheb Fundkar Phalbaag Lagvad Yojana",
+      "description": "Maharashtra support scheme for eligible farmers undertaking approved fruit orchard plantation.",
+      "descriptionHi": "Maharashtra support scheme for eligible fruit orchard plantation.",
+      "params": {
+        "state": ["Maharashtra"],
+        "district": "ALL",
+        "crops": ["ALL"],
+        "min_acres": 0
+      },
+      "benefit": "Financial assistance for eligible farmers undertaking fruit orchard plantation under the scheme, subject to approved crops, plantation area, and applicable government conditions.",
+      "benefitHi": "Financial assistance for eligible farmers undertaking fruit orchard plantation, subject to applicable government conditions.",
+      "docs": [],
+      "docsHi": [],
+      "category": "Agriculture",
+      "categoryHi": "Agriculture",
+      "url": "https://krishi.maharashtra.gov.in/",
+      "eligibility": "Eligible Maharashtra farmers undertaking approved fruit orchard plantation, subject to the scheme's current crop, area, land-record and other applicable conditions.",
+      "eligibilityHi": "Eligible Maharashtra farmers undertaking approved fruit orchard plantation subject to applicable conditions.",
+      "deadline": "Ongoing; check official portal for current information",
+      "deadlineHi": "Ongoing",
+      "status": "active"
+    },
+    "s34": {
+      "id": "cm_sustainable_agri_irrigation",
+      "name": "Chief Minister Sustainable Agriculture Irrigation Scheme",
+      "nameHi": "Chief Minister Sustainable Agriculture Irrigation Scheme",
+      "description": "Maharashtra support scheme for eligible farmers undertaking sustainable agricultural irrigation and water-management interventions.",
+      "descriptionHi": "Maharashtra support scheme for sustainable agricultural irrigation and water management.",
+      "params": {
+        "state": ["Maharashtra"],
+        "district": "ALL",
+        "crops": ["ALL"],
+        "min_acres": 0
+      },
+      "benefit": "Support for eligible farmers for sustainable agricultural irrigation and water-management interventions, subject to approved components and applicable government conditions.",
+      "benefitHi": "Support for sustainable agricultural irrigation and water-management interventions, subject to applicable government conditions.",
+      "docs": [],
+      "docsHi": [],
+      "category": "Irrigation",
+      "categoryHi": "Irrigation",
+      "url": "https://krishi.maharashtra.gov.in/",
+      "eligibility": "Eligible Maharashtra farmers, subject to the scheme's current irrigation-component, land-record, beneficiary and other applicable government conditions.",
+      "eligibilityHi": "Eligible Maharashtra farmers subject to applicable irrigation-component, land-record, beneficiary and other government conditions.",
+      "deadline": "Ongoing; check official portal for current information",
+      "deadlineHi": "Ongoing",
+      "status": "active"
+    },
+    "s35": {
+      "id": "dr_babasaheb_ambedkar_krushi_swavalamban",
+      "name": "Dr. Babasaheb Ambedkar Krushi Swavalamban Yojana",
+      "nameHi": "Dr. Babasaheb Ambedkar Krushi Swavalamban Yojana",
+      "description": "Maharashtra agricultural support scheme for eligible Scheduled Caste farmers, including assistance for approved farm development and irrigation-related components.",
+      "descriptionHi": "Maharashtra agricultural support scheme for eligible Scheduled Caste farmers.",
+      "params": {
+        "state": ["Maharashtra"],
+        "district": "ALL",
+        "crops": ["ALL"],
+        "min_acres": 0
+      },
+      "benefit": "Agricultural support for eligible farmers under the scheme, including assistance for approved farm development and irrigation-related components, subject to applicable government conditions.",
+      "benefitHi": "Agricultural support for eligible farmers, including approved farm development and irrigation-related components, subject to applicable government conditions.",
+      "docs": [],
+      "docsHi": [],
+      "category": "Agriculture",
+      "categoryHi": "Agriculture",
+      "url": "https://krishi.maharashtra.gov.in/",
+      "eligibility": "Eligible Scheduled Caste farmers in Maharashtra, subject to the scheme's current beneficiary, landholding, land-record, component and other government conditions.",
+      "eligibilityHi": "Eligible Scheduled Caste farmers in Maharashtra subject to applicable government conditions.",
+      "deadline": "Ongoing; check official portal for current information",
+      "deadlineHi": "Ongoing",
+      "status": "active"
     }
   },
   "categories": [
@@ -689,7 +814,7 @@
   "metadata": {
     "version": "2.0",
     "lastUpdated": "2026-02-21",
-    "totalSchemes": 30,
+    "totalSchemes": 35,
     "source": "Ministry of Agriculture & Farmers Welfare, Government of India"
   }
 }
