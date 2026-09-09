@@ -795,6 +795,131 @@
       "deadline": "Ongoing; check official portal for current information",
       "deadlineHi": "Ongoing",
       "status": "active"
+    },
+    "s36": {
+      "id": "krishi_bhagya_karnataka",
+      "name": "Krishi Bhagya Scheme",
+      "nameHi": "Krishi Bhagya Scheme",
+      "description": "Karnataka agriculture scheme supporting rainwater conservation, water storage and efficient use of water for farming.",
+      "descriptionHi": "Karnataka agriculture scheme supporting rainwater conservation, water storage and efficient use of water for farming.",
+      "params": {
+        "state": ["Karnataka"],
+        "district": "ALL",
+        "crops": ["ALL"],
+        "min_acres": 0
+      },
+      "benefit": "Assistance for eligible farmers for approved rainwater harvesting, water storage, water lifting, irrigation and related agricultural interventions under Krishi Bhagya, subject to current government guidelines.",
+      "benefitHi": "Assistance for approved rainwater harvesting, water storage, water lifting, irrigation and related agricultural interventions under Krishi Bhagya, subject to current government guidelines.",
+      "docs": [],
+      "docsHi": [],
+      "category": "Irrigation",
+      "categoryHi": "Irrigation",
+      "url": "https://raitamitra.karnataka.gov.in/52/krishi-bhagya-scheme/en",
+      "eligibility": "Eligible farmers in Karnataka subject to the current Krishi Bhagya implementation area, component, beneficiary, land and other applicable government conditions.",
+      "eligibilityHi": "Eligible Karnataka farmers subject to current Krishi Bhagya implementation area, component, beneficiary, land and other applicable government conditions.",
+      "deadline": "Ongoing; check official portal for current information",
+      "deadlineHi": "Ongoing",
+      "status": "active"
+    },
+    "s37": {
+      "id": "karnataka_farm_mechanization",
+      "name": "Karnataka Farm Mechanization Scheme",
+      "nameHi": "Karnataka Farm Mechanization Scheme",
+      "description": "Karnataka agricultural support for eligible farmers to access approved farm machinery and equipment for agricultural operations.",
+      "descriptionHi": "Karnataka agricultural support for eligible farmers to access approved farm machinery and equipment.",
+      "params": {
+        "state": ["Karnataka"],
+        "district": "ALL",
+        "crops": ["ALL"],
+        "min_acres": 0
+      },
+      "benefit": "Subsidy or financial assistance for eligible farmers to purchase or access approved agricultural machinery and equipment, subject to current government guidelines, approved machinery and applicable subsidy limits.",
+      "benefitHi": "Subsidy or financial assistance for approved agricultural machinery and equipment, subject to current government guidelines and applicable limits.",
+      "docs": [],
+      "docsHi": [],
+      "category": "Equipment",
+      "categoryHi": "Equipment",
+      "url": "https://raitamitra.karnataka.gov.in/",
+      "eligibility": "Eligible farmers in Karnataka subject to the applicable machinery, beneficiary, land-record and other scheme-specific government conditions.",
+      "eligibilityHi": "Eligible Karnataka farmers subject to applicable machinery, beneficiary, land-record and other scheme-specific government conditions.",
+      "deadline": "Ongoing; check official portal for current information",
+      "deadlineHi": "Ongoing",
+      "status": "active"
+    },
+    "s38": {
+      "id": "krishi_yantra_dhare",
+      "name": "Krishi Yantra Dhare",
+      "nameHi": "Krishi Yantra Dhare",
+      "description": "Karnataka agricultural machinery access programme providing farmers access to farm machinery through custom hiring centres.",
+      "descriptionHi": "Karnataka agricultural machinery access programme providing farm machinery through custom hiring centres.",
+      "params": {
+        "state": ["Karnataka"],
+        "district": "ALL",
+        "crops": ["ALL"],
+        "min_acres": 0
+      },
+      "benefit": "Access to agricultural machinery and equipment through custom hiring centres, with applicable government support and hiring arrangements subject to current Karnataka guidelines.",
+      "benefitHi": "Access to agricultural machinery and equipment through custom hiring centres, subject to current Karnataka guidelines.",
+      "docs": [],
+      "docsHi": [],
+      "category": "Equipment",
+      "categoryHi": "Equipment",
+      "url": "https://raitamitra.karnataka.gov.in/",
+      "eligibility": "Farmers in Karnataka who require agricultural machinery through the applicable Krishi Yantra Dhare custom hiring centre system, subject to current government conditions and availability.",
+      "eligibilityHi": "Karnataka farmers requiring agricultural machinery through the applicable Krishi Yantra Dhare custom hiring centre system.",
+      "deadline": "Ongoing; check official portal for current information",
+      "deadlineHi": "Ongoing",
+      "status": "active"
+    },
+    "s39": {
+      "id": "cm_krishi_vistara",
+      "name": "Chief Minister's Krishi Vistara",
+      "nameHi": "Chief Minister's Krishi Vistara",
+      "description": "Karnataka initiative focused on strengthening agricultural value chains through processing, value addition, farm-waste recycling and improved market linkages.",
+      "descriptionHi": "Karnataka initiative focused on agricultural value chains, value addition and improved market linkages.",
+      "params": {
+        "state": ["Karnataka"],
+        "district": "ALL",
+        "crops": ["ALL"],
+        "min_acres": 0
+      },
+      "benefit": "Support for eligible agricultural value-chain activities including processing, value addition, farm-waste recycling and market-linkage interventions, subject to current Karnataka government guidelines and applicable components.",
+      "benefitHi": "Support for eligible agricultural value-chain activities and market-linkage interventions, subject to current Karnataka government guidelines and applicable components.",
+      "docs": [],
+      "docsHi": [],
+      "category": "Agriculture",
+      "categoryHi": "Agriculture",
+      "url": "https://raitamitra.karnataka.gov.in/",
+      "eligibility": "Farmers and other eligible agricultural stakeholders in Karnataka, subject to the specific component, beneficiary and implementation conditions of the current programme.",
+      "eligibilityHi": "Eligible Karnataka farmers and agricultural stakeholders subject to current programme component, beneficiary and implementation conditions.",
+      "deadline": "Ongoing; check official portal for current information",
+      "deadlineHi": "Ongoing",
+      "status": "active"
+    },
+    "s40": {
+      "id": "karnataka_crop_insurance",
+      "name": "Karnataka Raitha Suraksha Pradhan Mantri Fasal Bima Yojana",
+      "nameHi": "Karnataka Raitha Suraksha Pradhan Mantri Fasal Bima Yojana",
+      "description": "Karnataka implementation of crop insurance support for eligible farmers against specified crop losses and risks under the applicable Pradhan Mantri Fasal Bima Yojana guidelines.",
+      "descriptionHi": "Karnataka implementation of crop insurance support for eligible farmers under applicable Pradhan Mantri Fasal Bima Yojana guidelines.",
+      "params": {
+        "state": ["Karnataka"],
+        "district": "ALL",
+        "crops": ["ALL"],
+        "min_acres": 0
+      },
+      "benefit": "Crop insurance coverage and compensation for eligible insured farmers against covered crop losses and risks, subject to notified crops, areas, seasons, premium requirements and current government guidelines.",
+      "benefitHi": "Crop insurance coverage and compensation for eligible insured farmers subject to notified crops, areas, seasons, premium requirements and current government guidelines.",
+      "docs": [],
+      "docsHi": [],
+      "category": "Insurance",
+      "categoryHi": "Insurance",
+      "url": "https://raitamitra.karnataka.gov.in/",
+      "eligibility": "Eligible farmers in Karnataka cultivating notified crops in notified areas and meeting the applicable crop-insurance enrolment, premium and scheme conditions.",
+      "eligibilityHi": "Eligible Karnataka farmers cultivating notified crops in notified areas and meeting applicable crop-insurance conditions.",
+      "deadline": "Ongoing; check official portal for current information",
+      "deadlineHi": "Ongoing",
+      "status": "active"
     }
   },
   "categories": [
@@ -814,7 +939,7 @@
   "metadata": {
     "version": "2.0",
     "lastUpdated": "2026-02-21",
-    "totalSchemes": 35,
+    "totalSchemes": 40,
     "source": "Ministry of Agriculture & Farmers Welfare, Government of India"
   }
 }
