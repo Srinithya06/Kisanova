@@ -359,7 +359,7 @@ class GroqProvider(LLMProvider):
                 f"MATCHED GOVERNMENT SCHEMES:\n{schemes_json}\n\n"
                 "RESPONSE INSTRUCTIONS:\n"
                 "1. Say that the schemes matched based on the state, land area, crops, and other profile details actually provided; do not say the farmer is definitely eligible.\n"
-                "2. Never say that all these schemes are open to the farmer, that the farmer qualifies for all of them, or use any similar blanket eligibility claim. Do not paraphrase stored eligibility as 'open to', 'available to', 'designed for', 'applicable to', 'you can apply', 'you qualify', or 'you are eligible' when addressing this farmer.\n"
+                "2. Never say that all these schemes are open to the farmer, that the farmer qualifies for all of them, or use any similar blanket eligibility claim. Do not make individualized eligibility-style claims such as 'you qualify', 'you are eligible', 'your land qualifies', 'you can apply', 'you can get', 'you can receive', 'you are covered', 'your field could benefit', or 'your cultivation could be covered'. Do not paraphrase stored eligibility as a personalized conclusion.\n"
                 "3. For each scheme: give its name, a concise relevance explanation grounded in the provided profile and stored scheme data, its key benefit, required docs, and apply URL.\n"
                 "4. STRICT GROUNDING: Use ONLY the data provided. Never invent amounts, terms, documents, or requirements.\n"
                 "5. Explicitly mention additional conditions when they appear in that scheme's stored eligibility text. Do not infer ownership, caste/category, income, age, tenancy, notified crops, notified areas, seasons, insurance enrollment, premium payment, beneficiary category, or other requirements not present in the farmer profile or stored scheme data.\n"
@@ -444,9 +444,13 @@ def _contains_unsupported_farmer_type_claim(text: str) -> bool:
 
 def _contains_unsupported_eligibility_claim(text: str) -> bool:
     """Detect direct eligibility guarantees that are not supported by the profile."""
+    subject = r"(?:you|your profile|your paddy|your farm|your land|your field|your cultivation|your \d+(?:\.\d+)? acres?[^.\n]{0,40})"
+    claim = r"(?:qualif(?:y|ies|ied)|are eligible|is eligible|can apply|can get|can receive|will receive|are entitled|are covered|is covered|could be covered|could benefit|would benefit|open to|available to|designed for|applicable to|fits? this group|matches? this group|qualifies? as)"
     claim_patterns = [
-        r"\b(?:you|your profile|your paddy|your farm|your land)\b[^.\n]{0,100}\b(?:qualif(?:y|ies|ies)|are eligible|is eligible|can apply|will receive|are entitled|open to|available to|designed for|applicable to|fits? this group|matches? this group)\b",
-        r"\b(?:qualif(?:y|ies|ies)|are eligible|is eligible|can apply|will receive|are entitled|open to|available to|designed for|applicable to|fits? this group|matches? this group)\b[^.\n]{0,100}\b(?:you|your profile|your paddy|your farm|your land)\b",
+        rf"\b{subject}\b[^.\n]{{0,120}}\b{claim}\b",
+        rf"\b{claim}\b[^.\n]{{0,120}}\b{subject}\b",
+        r"\b(?:includes?|making\s+it|fits?|matches?)\b[^.\n]{0,100}\b(?:a|the)\s+\d+(?:\.\d+)?[-\w\s]*\b(?:acre|acres?)\b[^.\n]{0,40}\b(?:farm|field|land|cultivation)\b",
+        r"\b(?:a|the)\s+\d+(?:\.\d+)?[-\w\s]*\b(?:acre|acres?)\b[^.\n]{0,40}\b(?:farm|field|land|cultivation)\b[^.\n]{0,100}\b(?:qualif(?:y|ies|ied)|eligible|covered|benefit|applicable|open|available)\b",
         r"\b(?:all|these|the)\s+(?:of\s+)?(?:the\s+)?(?:schemes|programmes|programs)\b[^.\n]{0,100}\b(?:open|available|eligible|qualif)\b",
     ]
     return any(re.search(pattern, text or "", flags=re.IGNORECASE) for pattern in claim_patterns)
@@ -506,22 +510,21 @@ def _fallback_explanation_generator(profile: Dict[str, Any], schemes: List[Dict[
     crops_str = ", ".join(profile.get("crops", [])) or "your crops"
 
     lines = [
-        f"🌾 **Great news! We found {len(schemes)} government scheme(s) matching your profile in {state} ({acres} acres, {crops_str}):**\n"
+        f"🌾 **We found {len(schemes)} scheme match(es) based on the information provided ({state}, {acres} acres, {crops_str}).**\n",
+        "Additional eligibility and implementation conditions require verification through the official portal.\n",
+        "| Scheme | Relevance | Key Benefit | Required Documents | Official URL |",
+        "|---|---|---|---|---|"
     ]
 
-    for i, s in enumerate(schemes[:4], 1):
+    for s in schemes[:4]:
         name = s.get("name", "Government Scheme")
         benefit = s.get("benefit", "N/A")
-        docs = ", ".join(s.get("docs", [])) if s.get("docs") else "Standard ID & Land documents"
+        docs = "; ".join(s.get("docs", [])) if s.get("docs") else "See official portal"
         url = s.get("url", "#")
         eligibility = s.get("eligibility", "")
 
-        lines.append(f"### {i}. {name}")
-        lines.append(f"• **Why it's relevant**: Matches your profile in {state} with cultivable land / crop eligibility.")
-        lines.append(f"• **Key Benefit**: {benefit}")
-        lines.append(f"• **Eligibility**: {eligibility}")
-        lines.append(f"• **Required Documents**: {docs}")
-        lines.append(f"• **Apply Here**: [{url}]({url})\n")
+        relevance = f"Matches available state/crop/land parameters; verify: {eligibility}"
+        lines.append(f"| {name} | {relevance} | {benefit} | {docs} | [{url}]({url}) |")
 
     lines.append("📌 *Note: Scheme matches indicate potential relevance based on your profile. Final eligibility and approval are subject to official government verification.*")
     return "\n".join(lines)
