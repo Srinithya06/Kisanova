@@ -359,7 +359,7 @@ class GroqProvider(LLMProvider):
                 f"MATCHED GOVERNMENT SCHEMES:\n{schemes_json}\n\n"
                 "RESPONSE INSTRUCTIONS:\n"
                 "1. Say that the schemes matched based on the state, land area, crops, and other profile details actually provided; do not say the farmer is definitely eligible.\n"
-                "2. Never say that all these schemes are open to the farmer, that the farmer qualifies for all of them, or use any similar blanket eligibility claim.\n"
+                "2. Never say that all these schemes are open to the farmer, that the farmer qualifies for all of them, or use any similar blanket eligibility claim. Do not paraphrase stored eligibility as 'open to', 'available to', 'designed for', 'applicable to', 'you can apply', 'you qualify', or 'you are eligible' when addressing this farmer.\n"
                 "3. For each scheme: give its name, a concise relevance explanation grounded in the provided profile and stored scheme data, its key benefit, required docs, and apply URL.\n"
                 "4. STRICT GROUNDING: Use ONLY the data provided. Never invent amounts, terms, documents, or requirements.\n"
                 "5. Explicitly mention additional conditions when they appear in that scheme's stored eligibility text. Do not infer ownership, caste/category, income, age, tenancy, notified crops, notified areas, seasons, insurance enrollment, premium payment, beneficiary category, or other requirements not present in the farmer profile or stored scheme data.\n"
@@ -379,7 +379,9 @@ class GroqProvider(LLMProvider):
             )
 
             explanation_text = (response.choices[0].message.content or "").strip()
-            if not profile.get("farmer_type") and _contains_unsupported_farmer_type_claim(explanation_text):
+            if (not explanation_text or
+                    (not profile.get("farmer_type") and _contains_unsupported_farmer_type_claim(explanation_text)) or
+                    _contains_unsupported_eligibility_claim(explanation_text)):
                 logger.warning("Groq explanation made an unsupported farmer-type claim. Using grounded fallback.")
                 return self.fallback.generate_explanation(profile, schemes)
             return explanation_text, "groq"
@@ -436,6 +438,16 @@ def _contains_unsupported_farmer_type_claim(text: str) -> bool:
     claim_patterns = [
         rf"\b(?:you|your|the farmer)\b[^.\n]{{0,80}}\b(?:{claim_terms})\b",
         rf"\b(?:{claim_terms})\b[^.\n]{{0,80}}\b(?:you|your)\b",
+    ]
+    return any(re.search(pattern, text or "", flags=re.IGNORECASE) for pattern in claim_patterns)
+
+
+def _contains_unsupported_eligibility_claim(text: str) -> bool:
+    """Detect direct eligibility guarantees that are not supported by the profile."""
+    claim_patterns = [
+        r"\b(?:you|your profile|your paddy|your farm|your land)\b[^.\n]{0,100}\b(?:qualif(?:y|ies|ies)|are eligible|is eligible|can apply|will receive|are entitled|open to|available to|designed for|applicable to|fits? this group|matches? this group)\b",
+        r"\b(?:qualif(?:y|ies|ies)|are eligible|is eligible|can apply|will receive|are entitled|open to|available to|designed for|applicable to|fits? this group|matches? this group)\b[^.\n]{0,100}\b(?:you|your profile|your paddy|your farm|your land)\b",
+        r"\b(?:all|these|the)\s+(?:of\s+)?(?:the\s+)?(?:schemes|programmes|programs)\b[^.\n]{0,100}\b(?:open|available|eligible|qualif)\b",
     ]
     return any(re.search(pattern, text or "", flags=re.IGNORECASE) for pattern in claim_patterns)
 
